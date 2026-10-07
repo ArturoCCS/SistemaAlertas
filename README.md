@@ -108,3 +108,4 @@ npm run test
 
 - La verificación por proximidad y usuarios distintos está implementada como base en servidor y marcada para evolución incremental en función SQL, evitando duplicar lógica crítica en cliente.
 - La pantalla de crear reporte usa un formulario inicial simplificado y puede operar con estados vacíos cuando la base aún no está configurada.
+- La exportación web está limitada por `react-native-maps`; esta versión está enfocada en iOS/Android para mapa nativo.
