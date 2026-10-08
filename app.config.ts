@@ -1,6 +1,7 @@
 import type { ExpoConfig } from 'expo/config';
 
-const googleMapsApiKey = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
+const googleMapsApiKeyRaw = process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY;
+const googleMapsApiKey = googleMapsApiKeyRaw?.trim() ? googleMapsApiKeyRaw.trim() : undefined;
 
 const config: ExpoConfig = {
   name: 'ALERTA CERCA',
