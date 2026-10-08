@@ -30,7 +30,7 @@ Variables mínimas:
 
 - `EXPO_PUBLIC_SUPABASE_URL`
 - `EXPO_PUBLIC_SUPABASE_ANON_KEY`
-- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` (si usarás provider Google en móvil nativo)
+- `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` (opcional, solo para mapa nativo con Google Maps)
 - `EXPO_PUBLIC_EAS_PROJECT_ID` (cuando vincules con EAS)
 
 > Si Supabase no está configurado, la app no se rompe: muestra mensajes en español con instrucciones.
@@ -63,8 +63,18 @@ eas build --profile development --platform android
 
 ## Google Maps
 
-La configuración base usa `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` en `app.config.ts` para iOS/Android.
-No se incluye ninguna clave real en el repositorio.
+La configuración usa `EXPO_PUBLIC_GOOGLE_MAPS_API_KEY` en `app.config.ts` para iOS/Android
+solo cuando la variable existe y no está vacía.
+
+Si no defines la clave, la app entra en **modo de respaldo** para mapa:
+
+- No rompe el flujo de reportes.
+- Muestra un aviso en español indicando que el mapa nativo no está configurado.
+- Muestra reportes públicos disponibles y su estado.
+- Conserva la leyenda de privacidad (solo ubicación aproximada pública).
+
+No se incluye ninguna clave real en el repositorio. Usa `.env` local o secretos del entorno
+de CI/CD para gestionar credenciales.
 
 ## Supabase y migraciones
 
