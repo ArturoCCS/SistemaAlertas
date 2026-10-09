@@ -3,7 +3,10 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { celdaDeCoordenada } from '@/src/domain/h3';
 import { actualizarCeldaPerfil } from '@/src/services/ubicacion';
-import { TAREA_ACTUALIZAR_CELDA } from '@/src/tasks/ubicacion-background-task';
+import {
+  registrarTareaActualizarCelda,
+  TAREA_ACTUALIZAR_CELDA,
+} from '@/src/tasks/ubicacion-background-task';
 
 export type UbicacionActual = {
   latitud: number;
@@ -58,28 +61,40 @@ export function useUbicacion() {
     void refrescar();
   }, [refrescar]);
 
-  // Requiere un build de desarrollo (EAS/Dev Client): Expo Go no soporta tareas en segundo plano.
+  // En Expo Go esto no está disponible (requiere expo-task-manager, que ahí
+  // no existe); `registrarTareaActualizarCelda` devuelve false sin tronar.
   const activarSeguimientoEnSegundoPlano = useCallback(async (): Promise<boolean> => {
+    const tareaLista = await registrarTareaActualizarCelda();
+
+    if (!tareaLista) {
+      return false;
+    }
+
     const permisoFondo = await Location.requestBackgroundPermissionsAsync();
 
     if (!permisoFondo.granted) {
       return false;
     }
 
-    const yaActivo = await Location.hasStartedLocationUpdatesAsync(TAREA_ACTUALIZAR_CELDA).catch(
-      () => false,
-    );
+    try {
+      const yaActivo = await Location.hasStartedLocationUpdatesAsync(TAREA_ACTUALIZAR_CELDA).catch(
+        () => false,
+      );
 
-    if (!yaActivo) {
-      await Location.startLocationUpdatesAsync(TAREA_ACTUALIZAR_CELDA, {
-        accuracy: Location.Accuracy.Balanced,
-        distanceInterval: 300,
-        deferredUpdatesInterval: 60000,
-        showsBackgroundLocationIndicator: false,
-      });
+      if (!yaActivo) {
+        await Location.startLocationUpdatesAsync(TAREA_ACTUALIZAR_CELDA, {
+          accuracy: Location.Accuracy.Balanced,
+          distanceInterval: 300,
+          deferredUpdatesInterval: 60000,
+          showsBackgroundLocationIndicator: false,
+        });
+      }
+
+      return true;
+    } catch (error) {
+      console.error('No se pudo activar la ubicación en segundo plano', error);
+      return false;
     }
-
-    return true;
   }, []);
 
   return {

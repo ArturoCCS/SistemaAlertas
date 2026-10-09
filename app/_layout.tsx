@@ -4,18 +4,22 @@ import '@/src/polyfills/h3-polyfill';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-// Registra la tarea de ubicación en segundo plano antes de que cualquier
-// pantalla intente iniciarla (ver src/hooks/use-ubicacion.ts).
-import '@/src/tasks/ubicacion-background-task';
 import { useRegistroPush } from '@/src/hooks/use-registro-push';
 import { useInicializarSesion, useSesion } from '@/src/hooks/use-sesion';
+import { registrarTareaActualizarCelda } from '@/src/tasks/ubicacion-background-task';
 
 function NavegacionRaiz() {
   const { cargando } = useSesion();
   useRegistroPush();
+
+  useEffect(() => {
+    // `expo-task-manager` no existe en Expo Go; esta función ya maneja ese
+    // caso internamente sin tronar (ver src/tasks/ubicacion-background-task.ts).
+    void registrarTareaActualizarCelda();
+  }, []);
 
   if (cargando) {
     return (

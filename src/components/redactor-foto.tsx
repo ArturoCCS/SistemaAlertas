@@ -1,7 +1,6 @@
 import * as ImageManipulator from 'expo-image-manipulator';
 import { useRef, useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { captureRef } from 'react-native-view-shot';
+import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 type Caja = { x: number; y: number };
 
@@ -37,10 +36,22 @@ export function RedactorFoto({ uriOriginal, onConfirmar, onCancelar }: RedactorF
   async function confirmar() {
     setProcesando(true);
     try {
-      const uriCapturada =
-        cajas.length > 0 && contenedorRef.current
-          ? await captureRef(contenedorRef, { format: 'jpg', quality: 0.9 })
-          : uriOriginal;
+      let uriCapturada = uriOriginal;
+
+      if (cajas.length > 0 && contenedorRef.current) {
+        try {
+          // Import dinámico: `react-native-view-shot` no existe en Expo Go
+          // (requiere un build propio) y no debe tronar el resto de la app.
+          const { captureRef } = await import('react-native-view-shot');
+          uriCapturada = await captureRef(contenedorRef, { format: 'jpg', quality: 0.9 });
+        } catch (error) {
+          console.error('No se pudo aplicar la redacción manual', error);
+          Alert.alert(
+            'Redacción no disponible',
+            'Cubrir zonas con cajas negras requiere un build propio de la app (no funciona en Expo Go). Se usará la foto original.',
+          );
+        }
+      }
 
       const resultado = await ImageManipulator.manipulateAsync(
         uriCapturada,

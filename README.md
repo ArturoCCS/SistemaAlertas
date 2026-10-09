@@ -54,8 +54,13 @@ npm install
 npm run start   # o: npm run android / npm run ios / npm run web
 ```
 
-> La ubicación en segundo plano y las notificaciones push **no funcionan en Expo Go**: usa un
-> development build (`eas build --profile development`).
+> La app corre en **Expo Go** para casi todo (registro, reportar, mapa, preferencias, moderación).
+> Dos cosas se degradan con gracia en vez de tronar: la ubicación en segundo plano
+> (`expo-task-manager` no existe en Expo Go) y la redacción manual de fotos con cajas negras
+> (`react-native-view-shot` tampoco) — ambas solo funcionan en un development build
+> (`eas build --profile development` o `npx expo run:android`). El registro de push también
+> falla silenciosamente en Expo Go (no hay forma de evitarlo: Expo quitó el soporte de push
+> remoto ahí), pero no afecta el resto de la app.
 
 ## Base de datos: aplicar la migración
 
@@ -144,7 +149,8 @@ npm run test
   iteración; el modelo de datos ya es compatible con agregarlo).
 - Las alertas críticas usan la prioridad/sonido máximo del sistema operativo; no se solicita el
   entitlement de *critical alerts* de Apple.
-- Ubicación en segundo plano y push requieren un development build (EAS/Dev Client); no
-  funcionan en Expo Go.
+- Ubicación en segundo plano, redacción manual de fotos (cajas negras) y registro de push
+  requieren un development build (EAS/Dev Client); en Expo Go se desactivan solos sin tronar
+  el resto de la app (ver `src/utils/entorno.ts`).
 - El horario de silencio se compara en hora del servidor (UTC), no en la zona horaria del
   dispositivo.

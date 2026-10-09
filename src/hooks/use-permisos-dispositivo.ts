@@ -1,6 +1,7 @@
 import * as Location from 'expo-location';
-import * as Notifications from 'expo-notifications';
 import { useEffect, useState } from 'react';
+
+import { ejecutandoEnExpoGo } from '@/src/utils/entorno';
 
 type EstadoPermiso = 'pendiente' | 'concedido' | 'denegado';
 
@@ -13,6 +14,14 @@ export function usePermisosDispositivo() {
       const ubicacion = await Location.getForegroundPermissionsAsync();
       setEstadoUbicacion(ubicacion.granted ? 'concedido' : 'denegado');
 
+      if (ejecutandoEnExpoGo) {
+        // Ni siquiera se puede importar expo-notifications en Expo Go
+        // (Android, SDK 53+) sin que tire error; ver use-registro-push.ts.
+        setEstadoNotificaciones('denegado');
+        return;
+      }
+
+      const Notifications = await import('expo-notifications');
       const notificaciones = await Notifications.getPermissionsAsync();
       setEstadoNotificaciones(notificaciones.granted ? 'concedido' : 'denegado');
     }
