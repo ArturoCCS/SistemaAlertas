@@ -6,6 +6,7 @@ const googleMapsApiKey = googleMapsApiKeyRaw?.trim() ? googleMapsApiKeyRaw.trim(
 const config: ExpoConfig = {
   name: 'ALERTA CERCA',
   slug: 'sistema-alertas',
+  owner: 'alfonso207',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
@@ -13,6 +14,10 @@ const config: ExpoConfig = {
   userInterfaceStyle: 'automatic',
   ios: {
     supportsTablet: true,
+    bundleIdentifier: 'com.alfonso207.sistemaalertas',
+    infoPlist: {
+      UIBackgroundModes: ['location'],
+    },
     ...(googleMapsApiKey
       ? {
           config: {
@@ -22,12 +27,14 @@ const config: ExpoConfig = {
       : {}),
   },
   android: {
+    package: 'com.alfonso207.sistemaalertas',
     adaptiveIcon: {
       foregroundImage: './assets/images/android-icon-foreground.png',
       backgroundImage: './assets/images/android-icon-background.png',
       monochromeImage: './assets/images/android-icon-monochrome.png',
       backgroundColor: '#E6F4FE',
     },
+    permissions: ['ACCESS_BACKGROUND_LOCATION'],
     ...(googleMapsApiKey
       ? {
           config: {
@@ -57,6 +64,10 @@ const config: ExpoConfig = {
       {
         locationWhenInUsePermission:
           'ALERTA CERCA usa tu ubicación para mostrar alertas cercanas y crear reportes comunitarios.',
+        locationAlwaysAndWhenInUsePermission:
+          'ALERTA CERCA puede actualizar tu celda aproximada en segundo plano para avisarte de alertas cercanas, incluso con la app cerrada. Nunca se guarda tu historial de ubicación.',
+        isAndroidBackgroundLocationEnabled: true,
+        isIosBackgroundLocationEnabled: true,
       },
     ],
     [
@@ -66,6 +77,15 @@ const config: ExpoConfig = {
         color: '#1D4ED8',
       },
     ],
+    [
+      'expo-image-picker',
+      {
+        photosPermission:
+          'ALERTA CERCA necesita acceso a tus fotos para adjuntar evidencia opcional a un reporte.',
+        cameraPermission:
+          'ALERTA CERCA necesita la cámara para tomar una foto del incidente que estás reportando.',
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,
@@ -73,7 +93,7 @@ const config: ExpoConfig = {
   },
   extra: {
     eas: {
-      projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
+      projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID ?? 'd304c630-1b5f-4db6-8d42-841365088633',
     },
   },
 };

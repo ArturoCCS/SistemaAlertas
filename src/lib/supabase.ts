@@ -1,4 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { Platform } from 'react-native';
 
 import type { Database } from '@/src/types/database';
 
@@ -26,8 +28,11 @@ export function obtenerClienteSupabase() {
 
   cliente = createClient<Database>(supabaseUrl ?? '', supabaseAnonKey ?? '', {
     auth: {
+      // En web, supabase-js usa localStorage por defecto; AsyncStorage solo aplica a nativo.
+      storage: Platform.OS === 'web' ? undefined : AsyncStorage,
       persistSession: true,
       autoRefreshToken: true,
+      detectSessionInUrl: false,
     },
   });
 

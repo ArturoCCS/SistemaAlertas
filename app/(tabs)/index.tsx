@@ -15,15 +15,20 @@ export default function InicioScreen() {
       <View style={[styles.estado, styles.estadoNoConfirmada]}>
         <Text style={styles.estadoTitulo}>Reporte ciudadano sin confirmar</Text>
         <Text style={styles.estadoTexto}>
-          Publicación inicial pendiente de validación por la comunidad.
+          Publicación inicial; solo llega dentro del radio inicial de su categoría.
+        </Text>
+      </View>
+
+      <View style={[styles.estado, styles.estadoCorroborada]}>
+        <Text style={styles.estadoTitulo}>Varios reportes (corroborada)</Text>
+        <Text style={styles.estadoTexto}>
+          Tres o más reportes independientes coinciden: puede pasar al segundo anillo.
         </Text>
       </View>
 
       <View style={[styles.estado, styles.estadoVerificada]}>
         <Text style={styles.estadoTitulo}>Alerta verificada</Text>
-        <Text style={styles.estadoTexto}>
-          Coincidencias suficientes en categoría, radio y ventana de tiempo.
-        </Text>
+        <Text style={styles.estadoTexto}>Confirmada por un moderador o autoridad.</Text>
       </View>
 
       {categoriasQuery.error ? (
@@ -41,7 +46,7 @@ export default function InicioScreen() {
         <Link href="/(tabs)/mapa">Ir al mapa</Link>
         <Link href="/(tabs)/crear-reporte">Crear reporte</Link>
         <Link href="/(tabs)/mis-reportes">Ver mis reportes</Link>
-        <Link href="/(tabs)/perfil">Abrir perfil</Link>
+        <Link href="/(tabs)/ajustes">Abrir ajustes</Link>
       </View>
     </View>
   );
@@ -71,6 +76,10 @@ const styles = StyleSheet.create({
   estadoNoConfirmada: {
     backgroundColor: '#FFFBEB',
     borderColor: '#D97706',
+  },
+  estadoCorroborada: {
+    backgroundColor: '#FFF7ED',
+    borderColor: '#EA580C',
   },
   estadoVerificada: {
     backgroundColor: '#ECFDF5',

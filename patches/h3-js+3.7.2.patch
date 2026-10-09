@@ -1,0 +1,52 @@
+diff --git a/node_modules/h3-js/dist/browser/h3-js.es.js b/node_modules/h3-js/dist/browser/h3-js.es.js
+index 5f74d6f..3e0be86 100644
+--- a/node_modules/h3-js/dist/browser/h3-js.es.js
++++ b/node_modules/h3-js/dist/browser/h3-js.es.js
+@@ -327,7 +327,7 @@ var libh3 = function (libh3) {
+     return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
+   }
+ 
+-  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-16le") : undefined;
++  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-8") : undefined;
+ 
+   function writeArrayToMemory(array, buffer) {
+     HEAP8.set(array, buffer);
+diff --git a/node_modules/h3-js/dist/browser/h3-js.js b/node_modules/h3-js/dist/browser/h3-js.js
+index be0058c..81278ee 100644
+--- a/node_modules/h3-js/dist/browser/h3-js.js
++++ b/node_modules/h3-js/dist/browser/h3-js.js
+@@ -327,7 +327,7 @@ var libh3 = function (libh3) {
+     return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
+   }
+ 
+-  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-16le") : undefined;
++  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-8") : undefined;
+ 
+   function writeArrayToMemory(array, buffer) {
+     HEAP8.set(array, buffer);
+diff --git a/node_modules/h3-js/dist/h3-js.es.js b/node_modules/h3-js/dist/h3-js.es.js
+index d006238..f7734ae 100644
+--- a/node_modules/h3-js/dist/h3-js.es.js
++++ b/node_modules/h3-js/dist/h3-js.es.js
+@@ -459,7 +459,7 @@ var libh3 = function (libh3) {
+     return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
+   }
+ 
+-  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-16le") : undefined;
++  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-8") : undefined;
+ 
+   function writeArrayToMemory(array, buffer) {
+     HEAP8.set(array, buffer);
+diff --git a/node_modules/h3-js/dist/h3-js.js b/node_modules/h3-js/dist/h3-js.js
+index 25a9e57..8cde848 100644
+--- a/node_modules/h3-js/dist/h3-js.js
++++ b/node_modules/h3-js/dist/h3-js.js
+@@ -459,7 +459,7 @@ var libh3 = function (libh3) {
+     return stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite);
+   }
+ 
+-  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-16le") : undefined;
++  var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-8") : undefined;
+ 
+   function writeArrayToMemory(array, buffer) {
+     HEAP8.set(array, buffer);

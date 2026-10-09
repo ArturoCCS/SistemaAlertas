@@ -46,3 +46,10 @@ example
 .env
 .env.*
 !.env.example
+
+# credenciales de firma locales (dev)
+credentials/
+credentials.json
+
+# caché local de la CLI de Supabase
+supabase/.temp/
